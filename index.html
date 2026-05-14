@@ -401,6 +401,14 @@ table.comparison tr.delta td.better { color: #4a8868; }
   line-height: 1.05;
   letter-spacing: -0.02em;
 }
+.wrought-delta .sub {
+  font-family: 'Carlito', sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.wrought-card.positive .wrought-delta .sub { color: #4a8868; font-style: normal; }
 .wrought-card.positive { border-top-color: #4a8868; background: linear-gradient(135deg, #fff 0%, #f4faf6 100%); }
 .wrought-card.positive .wrought-pillar.new { border-top-color: #4a8868; }
 .wrought-card.positive .wrought-pillar.new .system-name { color: #4a8868; }
@@ -540,8 +548,9 @@ footer {
     </div>
 
     <div class="wrought-delta">
-      <div class="label">Wroughted by</div>
+      <div class="label">Total tax wroughted</div>
       <div class="big" id="wrought-delta">$0</div>
+      <div class="sub" id="wrought-extra">+$0 extra wroughting vs current law</div>
     </div>
   </div>
 
@@ -729,7 +738,8 @@ function calc() {
   document.getElementById('wrought-old-keep').textContent = fmt(founderValueExit - oldTax);
   document.getElementById('wrought-new-tax').textContent = '- ' + fmt(m2mTotalTax);
   document.getElementById('wrought-new-keep').textContent = fmt(founderValueExit - m2mTotalTax);
-  document.getElementById('wrought-delta').textContent = fmtSigned(m2mDelta);
+  document.getElementById('wrought-delta').textContent = fmt(m2mTotalTax);
+  document.getElementById('wrought-extra').textContent = `${fmtSigned(m2mDelta)} extra wroughting vs current law`;
 
   // Timing note
   const note = `<strong>Cash-flow timing matters.</strong> Under Mark-to-Market, ${fmt(p1Tax)} of tax is due at 30 June 2027 - before any exit liquidity event. Under both Old System and Time Apportionment, the entire tax bill is deferred until exit.`;
