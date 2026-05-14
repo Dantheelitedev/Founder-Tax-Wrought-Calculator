@@ -610,7 +610,6 @@ footer {
     <div class="table-scroll">
       <table class="comparison" id="result-table"></table>
     </div>
-    <div class="timing-note" id="timing-note"></div>
   </section>
 
   <footer>Founder CGT Wrought-O-Meter - Illustrative only, not tax advice</footer>
@@ -804,9 +803,6 @@ function calc() {
   document.getElementById('wrought-delta').textContent = fmt(newBestTax);
   document.getElementById('wrought-extra').textContent = `${fmtSigned(newDelta)} extra wroughting vs current law (best of new regime options)`;
 
-  // Timing note
-  const note = `<strong>Cash-flow timing matters.</strong> Under Mark-to-Market, ${fmt(p1Tax)} of tax is due at 30 June 2027 - before any exit liquidity event. Under both Old System and Time Apportionment, the entire tax bill is deferred until exit.`;
-  document.getElementById('timing-note').innerHTML = note;
 }
 
 document.querySelectorAll('input.money').forEach(el => {
