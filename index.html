@@ -416,6 +416,46 @@ table.comparison tr.delta td.better { color: #4a8868; }
 .wrought-delta .sub strong {
   font-weight: 700;
 }
+.wrought-delta .tier {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--poor);
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+.wrought-delta .tier:empty { display: none; }
+.wrought-delta .tier .tier-eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  margin-bottom: 4px;
+}
+.wrought-delta .impact {
+  font-family: 'Carlito', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  font-style: italic;
+  margin-top: 10px;
+  line-height: 1.4;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.wrought-delta .impact strong {
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  font-style: normal;
+  color: var(--lilac-hover);
+}
+.wrought-delta .impact:empty { display: none; }
+.wrought-card.positive .wrought-delta .tier { color: #4a8868; }
 .wrought-card.positive .wrought-delta .sub { color: #4a8868; font-style: normal; }
 .wrought-card.positive { border-top-color: #4a8868; background: linear-gradient(135deg, #fff 0%, #f4faf6 100%); }
 .wrought-card.positive .wrought-pillar.new { border-top-color: #4a8868; }
@@ -616,6 +656,8 @@ footer {
       <div class="label">Total tax wroughted</div>
       <div class="big" id="wrought-delta">$0</div>
       <div class="sub" id="wrought-extra">+$0 extra wroughting vs current law</div>
+      <div class="tier" id="wrought-tier"></div>
+      <div class="impact" id="wrought-impact"></div>
     </div>
   </div>
 
@@ -640,6 +682,35 @@ const SNAPSHOT_DATE = new Date('2027-06-30');
 const TRANSITION_DATE = new Date('2027-07-01');
 const DAY_MS = 86400000;
 const CPI_RATE = 0.0264;
+const WATER_COST_PER_PERSON = 40;
+
+const TIERS = [
+  [0.235, 0.249, 'Mildly Mugged'],
+  [0.249, 0.263, 'Lightly Fleeced'],
+  [0.263, 0.277, 'Respectfully Raided'],
+  [0.277, 0.291, "Founders' Contribution To Society"],
+  [0.291, 0.305, 'Slightly Delaware Curious'],
+  [0.305, 0.319, 'Commercially Compromised'],
+  [0.319, 0.333, 'Reward-to-Risk Ratio Deleted'],
+  [0.333, 0.347, 'Startup Casualty'],
+  [0.347, 0.361, 'Founder Meltdown'],
+  [0.361, 0.375, 'ATO Co-Founder Tier'],
+  [0.375, 0.389, 'Brain Drain Imminent'],
+  [0.389, 0.403, 'Congratulations, You Built This In Australia'],
+  [0.403, 0.417, 'Economically Waterboarded'],
+  [0.417, 0.431, 'National Innovation & Science Funeral'],
+  [0.431, 0.445, 'One-Way Ticket to Singapore'],
+  [0.445, 0.460, 'VC Crime Scene']
+];
+function getTier(rate) {
+  if (!isFinite(rate)) return null;
+  if (rate >= 0.460) return 'Bent Over Backwards';
+  if (rate < 0.235) return null;
+  for (const [low, high, name] of TIERS) {
+    if (rate >= low && rate < high) return name;
+  }
+  return null;
+}
 
 const fmt = (n) => {
   if (n === null || n === undefined || isNaN(n)) return '-';
@@ -839,6 +910,22 @@ function calc() {
   document.getElementById('wrought-new-keep').textContent = fmt(founderValueExit - newBestTax);
   document.getElementById('wrought-delta').textContent = fmt(newBestTax);
   document.getElementById('wrought-extra').innerHTML = `${fmtSigned(newDelta)} <strong>extra wroughting</strong> vs current law (best of new regime options)`;
+
+  // Tier label + clean-water impact (only meaningful once an exit value drives a positive gain)
+  const tierEl = document.getElementById('wrought-tier');
+  const impactEl = document.getElementById('wrought-impact');
+  if (salePrice > 0 && totalGain > 0 && newBestTax > 0) {
+    const effRate = newBestTax / totalGain;
+    const tierName = getTier(effRate);
+    tierEl.innerHTML = tierName
+      ? `<span class="tier-eyebrow">Wroughting tier (${fmtPct(effRate)})</span>${tierName}`
+      : '';
+    const people = Math.round(newBestTax / WATER_COST_PER_PERSON);
+    impactEl.innerHTML = `With this money you could have provided clean drinking water to <strong>${people.toLocaleString('en-AU')}</strong> people.`;
+  } else {
+    tierEl.innerHTML = '';
+    impactEl.innerHTML = '';
+  }
 
 }
 
