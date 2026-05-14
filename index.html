@@ -693,6 +693,8 @@ const DAY_MS = 86400000;
 const CPI_RATE = 0.0264;
 const WATER_COST_PER_PERSON = 40;
 
+let userInteracted = false;
+
 const TIERS = [
   [0.235, 0.249, 'Mildly Mugged'],
   [0.249, 0.263, 'Lightly Fleeced'],
@@ -920,10 +922,10 @@ function calc() {
   document.getElementById('wrought-delta').textContent = fmt(newBestTax);
   document.getElementById('wrought-extra').innerHTML = `${fmtSigned(newDelta)} <strong>extra wroughting</strong> vs current law (best of new regime options)`;
 
-  // Tier label + clean-water impact (only meaningful once an exit value drives a positive gain)
+  // Tier label + clean-water impact - only populate once the user has interacted with an input
   const tierEl = document.getElementById('wrought-tier');
   const impactEl = document.getElementById('wrought-impact');
-  if (salePrice > 0 && totalGain > 0 && newBestTax > 0) {
+  if (userInteracted && salePrice > 0 && totalGain > 0 && newBestTax > 0) {
     const effRate = newBestTax / totalGain;
     const tierName = getTier(effRate);
     tierEl.innerHTML = tierName
@@ -942,9 +944,10 @@ document.querySelectorAll('input.money').forEach(el => {
   attachCommaFormatter(el);
   el.value = addCommas(el.value);
 });
-document.querySelectorAll('input').forEach(el => {
-  el.addEventListener('input', calc);
-  el.addEventListener('change', calc);
+function markInteracted() { userInteracted = true; calc(); }
+document.querySelectorAll('input:not([readonly])').forEach(el => {
+  el.addEventListener('input', markInteracted);
+  el.addEventListener('change', markInteracted);
 });
 calc();
 if (document.readyState === 'loading') {
