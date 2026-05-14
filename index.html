@@ -431,12 +431,61 @@ footer {
   letter-spacing: 0.04em;
 }
 
+.disclaimer {
+  margin-top: 28px;
+  padding: 16px 18px;
+  background: var(--subtle);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.disclaimer p { margin: 0 0 8px; }
+.disclaimer p:last-child { margin-bottom: 0; }
+.disclaimer strong {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
 @media (max-width: 760px) {
-  body { padding: 24px 12px 48px; font-size: 14px; }
-  .card { padding: 20px 18px; }
+  body { padding: 20px 12px 40px; font-size: 14px; }
+  .container { max-width: 100%; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 15px; }
+  .card { padding: 18px 16px; }
   .grid { grid-template-columns: 1fr; gap: 14px; }
-  table.comparison { font-size: 12px; }
-  table.comparison thead th, table.comparison td { padding: 7px 9px; }
+  .field input { font-size: 16px; }
+  .manifesto { padding: 16px 18px; }
+  .manifesto p { font-size: 14px; line-height: 1.55; }
+  .explainer li { font-size: 13.5px; }
+  .assumptions { font-size: 11.5px; padding: 10px 12px; }
+  table.comparison { font-size: 11.5px; min-width: 540px; }
+  table.comparison thead th, table.comparison td { padding: 6px 8px; }
+  table.comparison thead th { font-size: 10px; }
+  table.comparison thead th .col-tag { font-size: 9px; }
+  .wrought-card { padding: 14px 14px 16px; }
+  .wrought-card .headline { font-size: 15px; margin-bottom: 12px; }
+  .wrought-gain { padding: 6px 14px; margin-bottom: 12px; }
+  .wrought-gain .value { font-size: 17px; }
+  .wrought-pillar { padding: 8px 10px 10px; }
+  .wrought-pillar .keep { font-size: 16px; }
+  .wrought-pillar .tax { font-size: 13px; }
+  .wrought-delta { margin-top: 12px; padding-top: 10px; }
+  .wrought-delta .big { font-size: 24px; }
+  .wrought-delta .sub { font-size: 11px; }
+  .disclaimer { font-size: 10.5px; padding: 12px 14px; }
+}
+@media (max-width: 420px) {
+  h1 { font-size: 19px; letter-spacing: 0; }
+  .wrought-pillar .keep { font-size: 14px; }
+  .wrought-pillar .tax { font-size: 12px; }
+  .wrought-delta .big { font-size: 22px; }
 }
 </style>
 </head>
@@ -556,11 +605,19 @@ footer {
 
   <section class="card">
     <h2>Tax comparison</h2>
-    <table class="comparison" id="result-table"></table>
+    <div class="table-scroll">
+      <table class="comparison" id="result-table"></table>
+    </div>
     <div class="timing-note" id="timing-note"></div>
   </section>
 
-  <footer>EVP - Founder CGT Calculator - Illustrative only, not tax advice</footer>
+  <footer>EVP - Founder CGT Wrought-O-Meter - Illustrative only, not tax advice</footer>
+
+  <div class="disclaimer">
+    <p><strong>Disclaimer</strong></p>
+    <p>This note has been prepared for novelty and general informational purposes only and is not intended to constitute legal, taxation, accounting, financial or investment advice, nor a recommendation to invest or take any action. The measures described are based on announcements contained in the 2026-27 Federal Budget and, in many cases, remain subject to consultation, exposure draft legislation, amendment and final enactment. The ultimate form and application of the measures may differ materially from the summaries in this note.</p>
+    <p>The taxation consequences of any investment depend on each investor's particular circumstances, including their residency, legal structure and holding arrangements. Investors should obtain independent professional advice tailored to their circumstances before acting on any information contained in this note. The author makes no representation or warranty as to the accuracy, completeness or currency of the information, and accepts no liability for any loss arising from reliance on it.</p>
+  </div>
 </div>
 
 <script>
