@@ -410,6 +410,11 @@ table.comparison tr.delta td.better { color: #4a8868; }
   margin-top: 6px;
   letter-spacing: -0.005em;
 }
+.wrought-delta .sub strong {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
 .wrought-card.positive .wrought-delta .sub { color: #4a8868; font-style: normal; }
 .wrought-card.positive { border-top-color: #4a8868; background: linear-gradient(135deg, #fff 0%, #f4faf6 100%); }
 .wrought-card.positive .wrought-pillar.new { border-top-color: #4a8868; }
@@ -801,7 +806,7 @@ function calc() {
   document.getElementById('wrought-new-tax').textContent = '- ' + fmt(newBestTax);
   document.getElementById('wrought-new-keep').textContent = fmt(founderValueExit - newBestTax);
   document.getElementById('wrought-delta').textContent = fmt(newBestTax);
-  document.getElementById('wrought-extra').textContent = `${fmtSigned(newDelta)} extra wroughting vs current law (best of new regime options)`;
+  document.getElementById('wrought-extra').innerHTML = `${fmtSigned(newDelta)} <strong>extra wroughting</strong> vs current law (best of new regime options)`;
 
 }
 
