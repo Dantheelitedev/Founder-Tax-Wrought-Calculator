@@ -655,7 +655,6 @@ const fmtPct = (n) => {
   if (n === null || n === undefined || isNaN(n) || !isFinite(n)) return '-';
   return (n * 100).toLocaleString('en-AU', { maximumFractionDigits: 1 }) + '%';
 };
-const fmtYrs = (days) => (days / 365.25).toFixed(2) + ' yrs';
 const parseNum = (str) => parseFloat(String(str).replace(/,/g, '')) || 0;
 const addCommas = (str) => {
   const raw = String(str).replace(/[^\d.]/g, '');
@@ -724,8 +723,9 @@ function calc() {
   const oldTaxableGain = Math.max(0, totalGain) - oldDiscountAmt;
   const oldTax = oldTaxableGain * marginalRate;
 
-  // Post-2027 indexation factor
-  const yearsPost2027 = Math.max(0, (exitDate - TRANSITION_DATE) / (DAY_MS * 365.25));
+  // Post-2027 indexation factor (runs from later of acq date / 1 Jul 2027)
+  const indexStart = Math.max(acqDate.getTime(), TRANSITION_DATE.getTime());
+  const yearsPost2027 = Math.max(0, (exitDate.getTime() - indexStart) / (DAY_MS * 365.25));
   const indexFactor = Math.pow(1 + CPI_RATE, yearsPost2027);
 
   // MARK-TO-MARKET AT 30 JUNE 2027
