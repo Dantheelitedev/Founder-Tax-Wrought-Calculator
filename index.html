@@ -573,10 +573,10 @@ footer {
     <h2>What's changing</h2>
     <p>Announced under the banner of housing affordability but reaching far beyond, pending reforms target the 50% CGT discount on gains accrued after the change takes effect. Two transition mechanisms are under discussion:</p>
     <ul>
-      <li><strong>Mark-to-market at 30 June 2027</strong> - the unrealised gain from your cost base up to the company's value at 30 June 2027 accrues at that date under current rules (50% discount).</li>
-      <li><strong>Time-based apportionment</strong> - the total gain at exit is split pro-rata by days held before and after 1 July 2027. The pre-change portion retains the 50% CGT discount.</li>
+      <li><strong>Market Value Method (Mark-to-Market)</strong> - uses the asset's 1 July 2027 market value as a reference point. The pre-2027 portion of the gain (cost base → 30 June 2027 value) receives the old 50% discount; the post-2027 portion (30 June 2027 value → exit) receives the new indexation regime.</li>
+      <li><strong>Time Apportionment Method</strong> - the simplified fallback. The 1 July 2027 value is estimated by formula (linear growth from cost base to sale price), then the total gain is split pro-rata by days held before and after 1 July 2027. Pre-portion gets the 50% discount; post-portion gets indexation.</li>
     </ul>
-    <p>In both cases any uplift from 30 June 2027 to your eventual exit is taxed at your full marginal rate with no discount. Enter your scenario below to see the cash tax impact of each approach.</p>
+    <p>Neither method creates a tax event on 30 June 2027. Both are calculation rules applied at the actual disposal - the entire tax bill is accrued and payable at exit. Enter your scenario below to see the cash tax impact of each approach.</p>
   </section>
 
   <section class="card">
@@ -878,12 +878,12 @@ function calc() {
     { label: 'Indexed cost base (post-2027)',                  o: '-',                            m: fmt(m2mIndexedCostBase),                   a: fmt(appIndexedCostBasePost) },
     { label: 'Indexation benefit (gain reduction)',            o: '-',                            m: fmt(m2mIndexedCostBase - founderValue2027), a: fmt(appIndexBenefit) },
 
-    { section: 'Tax accrued' },
+    { section: 'Tax accrued (at disposal)' },
     { label: 'Taxable gain',                                   o: fmt(oldTaxableGain),            m: fmt(m2mTaxableGain),    a: fmt(appTaxableGain) },
     { label: 'Marginal rate',                                  o: fmtPct(marginalRate),           m: fmtPct(marginalRate),   a: fmtPct(marginalRate) },
-    { label: 'Tax accrued at 30 Jun 2027',                     o: '-',                            m: fmt(p1Tax),             a: '-' },
-    { label: 'Tax accrued at exit',                            o: fmt(oldTax),                    m: fmt(p2Tax),             a: fmt(appTax) },
-    { label: 'TOTAL TAX ACCRUED',                              o: fmt(oldTax),                    m: fmt(m2mTotalTax),       a: fmt(appTax), total: true },
+    { label: 'Tax on pre-2027 portion (50% discount)',         o: fmt(oldTax),                    m: fmt(p1Tax),             a: fmt(appPreTax) },
+    { label: 'Tax on post-2027 portion (indexation)',          o: '-',                            m: fmt(p2Tax),             a: fmt(appPostTax) },
+    { label: 'TOTAL TAX ACCRUED AT EXIT',                      o: fmt(oldTax),                    m: fmt(m2mTotalTax),       a: fmt(appTax), total: true },
 
     { section: 'Comparison' },
     { label: 'Delta vs Old System',                            o: '-',                            m: fmtSigned(m2mTotalTax - oldTax), a: fmtSigned(appTax - oldTax),
