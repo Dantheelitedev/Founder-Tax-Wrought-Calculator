@@ -97,12 +97,12 @@ p { margin: 0 0 12px; }
 
 .assumptions {
   background: var(--subtle);
-  padding: 12px 16px;
+  padding: 14px 18px;
   border-left: 3px solid var(--lilac);
   border-radius: 0 4px 4px 0;
   font-size: 12.5px;
   color: var(--muted);
-  margin-top: 16px;
+  margin-bottom: 24px;
 }
 .assumptions strong { color: var(--text); font-family: 'Carlito', sans-serif; font-weight: 700; }
 .assumptions ul { margin: 6px 0 0; padding-left: 18px; }
@@ -556,21 +556,10 @@ footer {
       <li><strong>Time-based apportionment</strong> - the total gain at exit is split pro-rata by days held before and after 1 July 2027. The pre-change portion retains the 50% CGT discount.</li>
     </ul>
     <p>In both cases any uplift from 30 June 2027 to your eventual exit is taxed at your full marginal rate with no discount. Enter your scenario below to see the cash tax impact of each approach.</p>
-    <div class="assumptions">
-      <strong>Assumptions</strong>
-      <ul>
-        <li>Top marginal tax rate: <strong>47%</strong> (incl. 2% Medicare levy).</li>
-        <li>50% CGT discount applies to gains arising <strong>before 1 July 2027</strong> on assets held more than 12 months.</li>
-        <li>From <strong>1 July 2027</strong> the discount is replaced by <strong>cost base indexation</strong> (per BP2 2026-27, p.21). The proposal also includes a 30% minimum tax on net capital gains, which is not modelled here as it doesn't bind at a 47% marginal rate.</li>
-        <li>CPI assumed at <strong>2.64% p.a. compounded</strong> - Australia's long-term average CPI 2010-2025. Indexation runs from 1 July 2027 to the exit date.</li>
-        <li>Under <strong>Mark-to-Market</strong>, indexation runs from the actual 30 June 2027 stake value (your input).</li>
-        <li>Under <strong>Time Apportionment</strong>, the asset is assumed to have grown at a constant linear rate over the holding period; indexation runs from the <em>implied</em> 30 June 2027 value derived from this assumption (cost base + total gain × pre-1 July 2027 share of days).</li>
-      </ul>
-    </div>
   </section>
 
   <section class="card">
-    <h2>Your scenario</h2>
+    <h2>Calculate the wrought</h2>
     <div class="grid">
       <div class="field">
         <label for="cost-base">Cost base (A$)</label>
@@ -659,6 +648,18 @@ footer {
       <div class="tier" id="wrought-tier"></div>
       <div class="impact" id="wrought-impact"></div>
     </div>
+  </div>
+
+  <div class="assumptions">
+    <strong>Assumptions</strong>
+    <ul>
+      <li>Top marginal tax rate: <strong>47%</strong> (incl. 2% Medicare levy).</li>
+      <li>50% CGT discount applies to gains arising <strong>before 1 July 2027</strong> on assets held more than 12 months.</li>
+      <li>From <strong>1 July 2027</strong> the discount is replaced by <strong>cost base indexation</strong> (per BP2 2026-27, p.21). The proposal also includes a 30% minimum tax on net capital gains, which is not modelled here as it doesn't bind at a 47% marginal rate.</li>
+      <li>CPI assumed at <strong>2.64% p.a. compounded</strong> - Australia's long-term average CPI 2010-2025. Indexation runs from 1 July 2027 to the exit date.</li>
+      <li>Under <strong>Mark-to-Market</strong>, indexation runs from the actual 30 June 2027 stake value (your input).</li>
+      <li>Under <strong>Time Apportionment</strong>, the asset is assumed to have grown at a constant linear rate over the holding period; indexation runs from the <em>implied</em> 30 June 2027 value derived from this assumption (cost base + total gain × pre-1 July 2027 share of days).</li>
+    </ul>
   </div>
 
   <section class="card">
