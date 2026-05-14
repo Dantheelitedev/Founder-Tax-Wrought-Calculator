@@ -590,7 +590,7 @@ footer {
       </div>
       <div class="wrought-arrow">→</div>
       <div class="wrought-pillar new">
-        <div class="system-name">Mark-to-Market</div>
+        <div class="system-name" id="wrought-new-name">Mark-to-Market</div>
         <div class="stat-label">Tax taken</div>
         <div class="tax" id="wrought-new-tax">$0</div>
         <div class="stat-label">You're left with</div>
@@ -787,18 +787,22 @@ function calc() {
   html += '</tbody>';
   document.getElementById('result-table').innerHTML = html;
 
-  // Wrought-O-Meter (always Mark-to-Market vs current law)
-  const m2mDelta = m2mTotalTax - oldTax;
+  // Wrought-O-Meter (best-of-two new regime vs current law)
+  const newBestIsM2M = m2mTotalTax <= appTax;
+  const newBestTax = newBestIsM2M ? m2mTotalTax : appTax;
+  const newBestName = newBestIsM2M ? 'Mark-to-Market' : 'Time Apportionment';
+  const newDelta = newBestTax - oldTax;
   const wroughtCard = document.getElementById('wrought-card');
-  wroughtCard.classList.toggle('positive', m2mDelta < 0);
+  wroughtCard.classList.toggle('positive', newDelta < 0);
 
   document.getElementById('wrought-gain').textContent = fmt(totalGain);
   document.getElementById('wrought-old-tax').textContent = '- ' + fmt(oldTax);
   document.getElementById('wrought-old-keep').textContent = fmt(founderValueExit - oldTax);
-  document.getElementById('wrought-new-tax').textContent = '- ' + fmt(m2mTotalTax);
-  document.getElementById('wrought-new-keep').textContent = fmt(founderValueExit - m2mTotalTax);
-  document.getElementById('wrought-delta').textContent = fmt(m2mTotalTax);
-  document.getElementById('wrought-extra').textContent = `${fmtSigned(m2mDelta)} extra wroughting vs current law`;
+  document.getElementById('wrought-new-name').textContent = newBestName;
+  document.getElementById('wrought-new-tax').textContent = '- ' + fmt(newBestTax);
+  document.getElementById('wrought-new-keep').textContent = fmt(founderValueExit - newBestTax);
+  document.getElementById('wrought-delta').textContent = fmt(newBestTax);
+  document.getElementById('wrought-extra').textContent = `${fmtSigned(newDelta)} extra wroughting vs current law (best of new regime options)`;
 
   // Timing note
   const note = `<strong>Cash-flow timing matters.</strong> Under Mark-to-Market, ${fmt(p1Tax)} of tax is due at 30 June 2027 - before any exit liquidity event. Under both Old System and Time Apportionment, the entire tax bill is deferred until exit.`;
