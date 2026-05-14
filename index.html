@@ -506,7 +506,7 @@ footer {
     <h2>What's changing</h2>
     <p>Announced under the banner of housing affordability but reaching far beyond, pending reforms target the 50% CGT discount on gains accrued after the change takes effect. Two transition mechanisms are under discussion:</p>
     <ul>
-      <li><strong>Mark-to-market at 30 June 2027</strong> - the unrealised gain from your cost base up to the company's value at 30 June 2027 is deemed realised on that date and taxed under current rules (50% discount).</li>
+      <li><strong>Mark-to-market at 30 June 2027</strong> - the unrealised gain from your cost base up to the company's value at 30 June 2027 accrues at that date under current rules (50% discount).</li>
       <li><strong>Time-based apportionment</strong> - the total gain at exit is split pro-rata by days held before and after 1 July 2027. The pre-change portion retains the 50% CGT discount.</li>
     </ul>
     <p>In both cases any uplift from 30 June 2027 to your eventual exit is taxed at your full marginal rate with no discount. Enter your scenario below to see the cash tax impact of each approach.</p>
@@ -609,9 +609,6 @@ footer {
     <h2>Tax comparison</h2>
     <div class="table-scroll">
       <table class="comparison" id="result-table"></table>
-    </div>
-    <div class="timing-note">
-      <strong>Cash timing:</strong> Under Mark-to-Market, the Phase 1 tax accrues at 30 June 2027 - a real CGT event triggered before any liquidity. Under Time Apportionment there is no event on 30 June 2027; the time-split is purely a calculation rule applied at exit, so the entire tax bill accrues only when the actual disposal happens.
     </div>
   </section>
 
@@ -749,12 +746,12 @@ function calc() {
     { label: 'Holding period at 30 Jun 2027',                  o: '-',                                 m: fmtYearsDays(acqDate, SNAPSHOT_DATE), a: '-' },
     { label: '50% discount applied to',                        o: fmt(oldDiscountAmt),            m: fmt(p1DiscountAmt),     a: fmt(appPreDiscount) },
 
-    { section: 'Tax payable' },
+    { section: 'Tax accrued' },
     { label: 'Taxable gain',                                   o: fmt(oldTaxableGain),            m: fmt(m2mTaxableGain),    a: fmt(appTaxableGain) },
     { label: 'Marginal rate',                                  o: fmtPct(marginalRate),           m: fmtPct(marginalRate),   a: fmtPct(marginalRate) },
     { label: 'Tax accrued at 30 Jun 2027',                     o: '-',                            m: fmt(p1Tax),             a: '-' },
     { label: 'Tax accrued at exit',                            o: fmt(oldTax),                    m: fmt(p2Tax),             a: fmt(appTax) },
-    { label: 'TOTAL TAX PAYABLE',                              o: fmt(oldTax),                    m: fmt(m2mTotalTax),       a: fmt(appTax), total: true },
+    { label: 'TOTAL TAX ACCRUED',                              o: fmt(oldTax),                    m: fmt(m2mTotalTax),       a: fmt(appTax), total: true },
 
     { section: 'Comparison' },
     { label: 'Delta vs Old System',                            o: '-',                            m: fmtSigned(m2mTotalTax - oldTax), a: fmtSigned(appTax - oldTax),
