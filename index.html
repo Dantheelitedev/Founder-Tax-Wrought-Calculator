@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Founder CGT Tax Wrought Calculator - FY27 Budget Changes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lilac: #7474A3;
+  --lilac-dim: #a0a0c0;
+  --lilac-hover: #5a5a82;
+  --text: #1a1a2e;
+  --muted: #8a8880;
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --subtle: #ededea;
+  --border: #d8d6cf;
+  --row-alt: #F2F2F2;
+  --good: #92D050;
+  --fair: #FFD966;
+  --poor: #FF6B6B;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Carlito', Calibri, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  padding: 48px 24px 72px;
+  line-height: 1.55;
+  font-size: 15px;
+}
+.container { max-width: 1120px; margin: 0 auto; }
+
+h1, h2, h3, .mono { font-family: 'DM Mono', monospace; }
+h1 {
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--lilac);
+  letter-spacing: 0.01em;
+  margin: 0 0 6px;
+}
+h2 {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--lilac);
+  letter-spacing: 0.02em;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--lilac-dim);
+}
+h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 400;
+  margin: 20px 0 10px;
+}
+p { margin: 0 0 12px; }
+.subtitle { color: var(--muted); font-size: 14px; margin: 0 0 32px; max-width: 780px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+}
+
+.manifesto {
+  background: linear-gradient(135deg, #fdf6f6 0%, #fff 100%);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--poor);
+  border-radius: 8px;
+  padding: 22px 26px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.manifesto p {
+  margin: 0;
+  font-family: 'Carlito', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--text);
+  font-style: italic;
+}
+
+.explainer ul { margin: 8px 0 12px; padding-left: 22px; }
+.explainer li { margin-bottom: 6px; }
+.explainer strong { color: var(--lilac-hover); font-family: 'DM Mono', monospace; font-weight: 500; }
+
+.assumptions {
+  background: var(--subtle);
+  padding: 12px 16px;
+  border-left: 3px solid var(--lilac);
+  border-radius: 0 4px 4px 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 16px;
+}
+.assumptions strong { color: var(--text); font-family: 'Carlito', sans-serif; font-weight: 700; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 28px;
+}
+.field { display: flex; flex-direction: column; }
+.field label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.field input {
+  font-family: 'Carlito', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 9px 11px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field input:focus {
+  outline: none;
+  border-color: var(--lilac);
+  box-shadow: 0 0 0 3px rgba(116,116,163,0.18);
+}
+.field input.fixed {
+  background: var(--subtle);
+  color: var(--muted);
+  cursor: not-allowed;
+  border-style: dashed;
+}
+.field input.fixed:focus {
+  box-shadow: none;
+  border-color: var(--border);
+}
+.input-group { position: relative; }
+.input-group .prefix, .input-group .suffix {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  pointer-events: none;
+}
+.input-group .prefix { left: 11px; }
+.input-group .suffix { right: 12px; }
+.input-group input.with-prefix { padding-left: 23px; }
+.input-group input.with-suffix { padding-right: 26px; }
+
+table.comparison {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+table.comparison thead th {
+  background: var(--lilac);
+  color: white;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  font-size: 11.5px;
+  text-align: right;
+  padding: 12px 14px;
+  letter-spacing: 0.04em;
+  vertical-align: bottom;
+}
+table.comparison thead th:first-child {
+  text-align: left;
+  background: var(--lilac-hover);
+}
+table.comparison thead th .col-tag {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.85;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+table.comparison td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+}
+table.comparison td:first-child {
+  text-align: left;
+  font-family: 'Carlito', sans-serif;
+  color: var(--text);
+  font-size: 13.5px;
+}
+table.comparison tbody tr:nth-child(even) td { background: var(--row-alt); }
+table.comparison tr.section td {
+  background: var(--subtle) !important;
+  color: var(--lilac);
+  font-family: 'DM Mono', monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 7px 14px;
+  text-align: left;
+  font-weight: 500;
+}
+table.comparison tr.total td {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  background: #fafaf8 !important;
+  border-top: 2px solid var(--lilac);
+  border-bottom: 2px solid var(--lilac);
+}
+table.comparison tr.subtotal td {
+  font-weight: 700;
+  background: #fafaf8 !important;
+  color: var(--text);
+}
+table.comparison tr.delta td {
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--surface) !important;
+}
+table.comparison tr.delta td.worse { color: var(--lilac-hover); }
+table.comparison tr.delta td.better { color: #4a8868; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-swatch {
+  width: 11px; height: 11px; border-radius: 2px;
+  background: var(--lilac);
+}
+
+.timing-note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: var(--subtle);
+  border-radius: 4px;
+}
+.timing-note strong { color: var(--text); }
+
+.wrought-card {
+  background: linear-gradient(135deg, #fff 0%, #fdf6f6 100%);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--poor);
+  border-radius: 8px;
+  padding: 28px 28px 26px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.wrought-card .eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.wrought-card .headline {
+  font-family: 'Carlito', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 10px;
+  letter-spacing: -0.005em;
+}
+.wrought-card .headline em {
+  font-style: italic;
+  color: var(--lilac-hover);
+  font-weight: 700;
+}
+.wrought-card .big-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 56px;
+  font-weight: 500;
+  color: var(--poor);
+  line-height: 1.05;
+  margin: 8px 0 4px;
+  letter-spacing: -0.02em;
+}
+.wrought-card.positive .big-number { color: #4a8868; }
+.wrought-card.positive { border-top-color: #4a8868; background: linear-gradient(135deg, #fff 0%, #f4faf6 100%); }
+.wrought-card .big-caption {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+.wrought-card .breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 540px;
+  margin: 18px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.wrought-card .breakdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wrought-card .breakdown-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.wrought-card .breakdown-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--poor);
+}
+.wrought-card.positive .breakdown-value { color: #4a8868; }
+.wrought-card .footnote {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 16px;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+footer {
+  margin-top: 36px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 760px) {
+  body { padding: 24px 12px 48px; font-size: 14px; }
+  .card { padding: 20px 18px; }
+  .grid { grid-template-columns: 1fr; gap: 14px; }
+  table.comparison { font-size: 12px; }
+  table.comparison thead th, table.comparison td { padding: 7px 9px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Founder CGT Tax Wrought Calculator</h1>
+  </header>
+
+  <section class="manifesto">
+    <p>The draconian changes to CGT taxation under the proposed FY27 Budget stand poised to trigger a severe brain drain across the Australian startup ecosystem. By effectively abolishing the long-standing 50% CGT discount for founders and startup employees, Australia risks imposing the highest effective tax rate on startup capital gains anywhere in the developed world. The likely outcome is fewer founders building in Australia, weaker employee incentives, more companies and talent moving offshore, and a significant reduction in long-term innovation and venture investment.</p>
+  </section>
+
+  <section class="card explainer">
+    <h2>What's changing</h2>
+    <p>The 2026-27 Federal Budget proposed reforms to the capital gains tax treatment of unlisted shares held by Australian founders. The reforms target the 50% CGT discount on gains accrued after the change takes effect. Two transition mechanisms are under discussion:</p>
+    <ul>
+      <li><strong>Mark-to-market at 30 June 2027</strong> - the unrealised gain from your cost base up to the company's value at 30 June 2027 is deemed realised on that date and taxed under current rules (50% discount if held more than 12 months). Any further uplift from 30 June 2027 to your eventual exit is taxed at your full marginal rate with no discount.</li>
+      <li><strong>Time-based apportionment</strong> - the total gain at exit is split pro-rata by days held before and after 1 July 2027. The pre-change portion retains the 50% CGT discount; the post-change portion does not.</li>
+    </ul>
+    <p>Enter your scenario below to see the cash tax impact of each approach.</p>
+    <div class="assumptions">
+      <strong>Assumptions:</strong> top marginal tax rate of 47% (incl. 2% Medicare levy, editable below); 50% CGT discount available whenever the relevant holding period exceeds 12 months; no small-business CGT concessions, capital losses, or super contribution offsets applied; no early-stage investor / VCLP concessions. Founder is assumed to hold the same number of shares from acquisition to exit - percentage changes reflect dilution from new issuances, not partial sell-downs. Mechanism specifics are illustrative based on the 2026-27 Budget Paper No. 2 narrative; confirm draft legislation before relying on this output.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Your scenario</h2>
+    <div class="grid">
+      <div class="field">
+        <label for="cost-base">Cost base (A$)</label>
+        <div class="input-group">
+          <span class="prefix">$</span>
+          <input id="cost-base" type="text" inputmode="numeric" class="with-prefix money" value="1">
+        </div>
+      </div>
+      <div class="field">
+        <label for="acq-date">Date you received the shares/options</label>
+        <input id="acq-date" type="date" value="2025-06-30">
+      </div>
+      <div class="field">
+        <label for="company-value-2027">Company value at 30 June 2027 (A$)</label>
+        <div class="input-group">
+          <span class="prefix">$</span>
+          <input id="company-value-2027" type="text" inputmode="numeric" class="with-prefix money" value="5000000">
+        </div>
+      </div>
+      <div class="field">
+        <label for="pct-2027">% of company held at 30 June 2027</label>
+        <div class="input-group">
+          <input id="pct-2027" type="number" class="with-suffix" value="50" min="0" max="100" step="0.1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="sale-price">Assumed company sale price at exit (A$)</label>
+        <div class="input-group">
+          <span class="prefix">$</span>
+          <input id="sale-price" type="text" inputmode="numeric" class="with-prefix money" value="100000000">
+        </div>
+      </div>
+      <div class="field">
+        <label for="pct-exit">% of company held at exit</label>
+        <div class="input-group">
+          <input id="pct-exit" type="number" class="with-suffix" value="18" min="0" max="100" step="0.1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="exit-date">Exit date</label>
+        <input id="exit-date" type="date" value="2035-06-30">
+      </div>
+      <div class="field">
+        <label for="marginal-rate">Marginal tax rate</label>
+        <div class="input-group">
+          <input id="marginal-rate" type="text" class="with-suffix fixed" value="47" readonly tabindex="-1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrought-card" id="wrought-card">
+    <div class="eyebrow">The Wrought-O-Meter</div>
+    <h3 class="headline">See how much you've been <em>wroughted</em></h3>
+    <div class="big-number" id="wrought-big">+$0</div>
+    <div class="big-caption" id="wrought-caption">extra tax under the worst-case proposal</div>
+    <div class="breakdown">
+      <div class="breakdown-item">
+        <div class="breakdown-label">Mark-to-Market</div>
+        <div class="breakdown-value" id="wrought-m2m">+$0</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Time Apportionment</div>
+        <div class="breakdown-value" id="wrought-app">+$0</div>
+      </div>
+    </div>
+    <div class="footnote" id="wrought-footnote">vs the after-tax outcome under current law</div>
+  </div>
+
+  <section class="card">
+    <h2>Tax comparison</h2>
+    <table class="comparison" id="result-table"></table>
+    <div class="timing-note" id="timing-note"></div>
+  </section>
+
+  <footer>EVP - Founder CGT Calculator - Illustrative only, not tax advice</footer>
+</div>
+
+<script>
+const SNAPSHOT_DATE = new Date('2027-06-30');
+const TRANSITION_DATE = new Date('2027-07-01');
+const DAY_MS = 86400000;
+
+const fmt = (n) => {
+  if (n === null || n === undefined || isNaN(n)) return '-';
+  const sign = n < 0 ? '-' : '';
+  return sign + '$' + Math.abs(Math.round(n)).toLocaleString('en-AU');
+};
+const fmtSigned = (n) => {
+  if (n === null || n === undefined || isNaN(n)) return '-';
+  if (Math.abs(n) < 0.5) return '$0';
+  return (n > 0 ? '+' : '-') + '$' + Math.abs(Math.round(n)).toLocaleString('en-AU');
+};
+const fmtPct = (n) => {
+  if (n === null || n === undefined || isNaN(n) || !isFinite(n)) return '-';
+  return (n * 100).toLocaleString('en-AU', { maximumFractionDigits: 1 }) + '%';
+};
+const fmtYrs = (days) => (days / 365.25).toFixed(2) + ' yrs';
+const parseNum = (str) => parseFloat(String(str).replace(/,/g, '')) || 0;
+const addCommas = (str) => {
+  const raw = String(str).replace(/[^\d.]/g, '');
+  if (raw === '') return '';
+  const parts = raw.split('.');
+  parts[0] = parts[0].replace(/^0+(?=\d)/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  if (parts[0] === '') parts[0] = '0';
+  return parts.length > 1 ? parts[0] + '.' + parts[1].slice(0, 2) : parts[0];
+};
+function attachCommaFormatter(input) {
+  const reformat = () => {
+    const oldVal = input.value;
+    const oldPos = input.selectionStart || 0;
+    const digitsBefore = (oldVal.slice(0, oldPos).match(/[\d.]/g) || []).length;
+    const formatted = addCommas(oldVal);
+    input.value = formatted;
+    let newPos = 0, count = 0;
+    while (newPos < formatted.length && count < digitsBefore) {
+      if (/[\d.]/.test(formatted[newPos])) count++;
+      newPos++;
+    }
+    try { input.setSelectionRange(newPos, newPos); } catch (e) {}
+  };
+  input.addEventListener('input', reformat);
+}
+const fmtYearsDays = (acq, end) => {
+  if (!(acq instanceof Date) || !(end instanceof Date) || isNaN(acq) || isNaN(end) || end < acq) return '-';
+  let years = end.getFullYear() - acq.getFullYear();
+  const anniversary = new Date(acq.getFullYear() + years, acq.getMonth(), acq.getDate());
+  if (anniversary > end) {
+    years--;
+    anniversary.setFullYear(anniversary.getFullYear() - 1);
+  }
+  const days = Math.round((end - anniversary) / DAY_MS);
+  const yLabel = years === 1 ? 'year' : 'years';
+  const dLabel = days === 1 ? 'day' : 'days';
+  return `${years} ${yLabel}, ${days} ${dLabel}`;
+};
+
+function calc() {
+  const costBase = parseNum(document.getElementById('cost-base').value);
+  const acqDate = new Date(document.getElementById('acq-date').value);
+  const companyValue2027 = parseNum(document.getElementById('company-value-2027').value);
+  const pct2027 = (parseFloat(document.getElementById('pct-2027').value) || 0) / 100;
+  const salePrice = parseNum(document.getElementById('sale-price').value);
+  const pctExit = (parseFloat(document.getElementById('pct-exit').value) || 0) / 100;
+  const exitDate = new Date(document.getElementById('exit-date').value);
+  const marginalRate = (parseNum(document.getElementById('marginal-rate').value)) / 100;
+
+  if (isNaN(exitDate.getTime()) || isNaN(acqDate.getTime())) return;
+
+  const totalDays = Math.max(1, (exitDate - acqDate) / DAY_MS);
+  const daysHeldAt2027 = Math.max(0, Math.min(totalDays, (SNAPSHOT_DATE - acqDate) / DAY_MS));
+  const daysPreChange = Math.max(0, Math.min(totalDays, (SNAPSHOT_DATE - acqDate) / DAY_MS));
+  const daysPostChange = Math.max(0, totalDays - daysPreChange);
+
+  const founderValue2027 = companyValue2027 * pct2027;
+  const founderValueExit = salePrice * pctExit;
+  const totalGain = founderValueExit - costBase;
+  const phase1Gain = founderValue2027 - costBase;
+  const phase2Gain = founderValueExit - founderValue2027;
+
+  // OLD SYSTEM
+  const oldDiscountEligible = totalDays >= 365;
+  const oldDiscountAmt = oldDiscountEligible ? Math.max(0, totalGain) * 0.5 : 0;
+  const oldTaxableGain = Math.max(0, totalGain) - oldDiscountAmt;
+  const oldTax = oldTaxableGain * marginalRate;
+
+  // MARK-TO-MARKET AT 30 JUNE 2027
+  const p1DiscountEligible = daysHeldAt2027 >= 365;
+  const p1DiscountAmt = p1DiscountEligible ? Math.max(0, phase1Gain) * 0.5 : 0;
+  const p1TaxableGain = Math.max(0, phase1Gain) - p1DiscountAmt;
+  const p1Tax = p1TaxableGain * marginalRate;
+  const p2TaxableGain = Math.max(0, phase2Gain);
+  const p2Tax = p2TaxableGain * marginalRate;
+  const m2mTotalTax = p1Tax + p2Tax;
+  const m2mTaxableGain = p1TaxableGain + p2TaxableGain;
+
+  // TIME-BASED APPORTIONMENT
+  const appPreFrac = totalDays > 0 ? daysPreChange / totalDays : 0;
+  const appPostFrac = totalDays > 0 ? daysPostChange / totalDays : 0;
+  const appPreGain = Math.max(0, totalGain) * appPreFrac;
+  const appPostGain = Math.max(0, totalGain) * appPostFrac;
+  const appDiscountEligible = totalDays >= 365;
+  const appPreDiscount = appDiscountEligible ? appPreGain * 0.5 : 0;
+  const appTaxableGain = (appPreGain - appPreDiscount) + appPostGain;
+  const appTax = appTaxableGain * marginalRate;
+
+  const rows = [
+    { section: 'Founder economics' },
+    { label: "Founder's stake value at 30 Jun 2027",           o: '-',                            m: fmt(founderValue2027),  a: fmt(founderValue2027) },
+    { label: "Founder's stake value at exit",                  o: fmt(founderValueExit),          m: fmt(founderValueExit),  a: fmt(founderValueExit) },
+    { label: 'Cost base',                                      o: fmt(costBase),                  m: fmt(costBase),          a: fmt(costBase) },
+    { label: 'Total economic gain',                            o: fmt(totalGain),                 m: fmt(totalGain),         a: fmt(totalGain), subtotal: true },
+
+    { section: 'Gain split' },
+    { label: 'Phase 1 - cost base → 30 Jun 2027',              o: '-',                            m: fmt(phase1Gain),        a: fmt(appPreGain) },
+    { label: 'Phase 2 - 30 Jun 2027 → exit',                   o: '-',                            m: fmt(phase2Gain),        a: fmt(appPostGain) },
+    { label: 'Pre-change fraction of holding period',          o: '-',                            m: '-',                    a: fmtPct(appPreFrac) },
+
+    { section: 'CGT discount' },
+    { label: 'Total holding period',                           o: fmtYearsDays(acqDate, exitDate),     m: fmtYearsDays(acqDate, exitDate),     a: fmtYearsDays(acqDate, exitDate) },
+    { label: 'Holding period at 30 Jun 2027',                  o: '-',                                 m: fmtYearsDays(acqDate, SNAPSHOT_DATE), a: '-' },
+    { label: '50% discount applied to',                        o: fmt(oldDiscountAmt),            m: fmt(p1DiscountAmt),     a: fmt(appPreDiscount) },
+
+    { section: 'Tax payable' },
+    { label: 'Taxable gain',                                   o: fmt(oldTaxableGain),            m: fmt(m2mTaxableGain),    a: fmt(appTaxableGain) },
+    { label: 'Marginal rate',                                  o: fmtPct(marginalRate),           m: fmtPct(marginalRate),   a: fmtPct(marginalRate) },
+    { label: 'Tax due at 30 Jun 2027 (Phase 1)',               o: '-',                            m: fmt(p1Tax),             a: '-' },
+    { label: 'Tax due at exit (Phase 2)',                      o: fmt(oldTax),                    m: fmt(p2Tax),             a: fmt(appTax) },
+    { label: 'TOTAL TAX PAYABLE',                              o: fmt(oldTax),                    m: fmt(m2mTotalTax),       a: fmt(appTax), total: true },
+
+    { section: 'Comparison' },
+    { label: 'Delta vs Old System',                            o: '-',                            m: fmtSigned(m2mTotalTax - oldTax), a: fmtSigned(appTax - oldTax),
+      mClass: m2mTotalTax > oldTax ? 'worse' : 'better',
+      aClass: appTax > oldTax ? 'worse' : 'better',
+      delta: true },
+    { label: 'After-tax proceeds',                             o: fmt(founderValueExit - oldTax), m: fmt(founderValueExit - m2mTotalTax), a: fmt(founderValueExit - appTax), subtotal: true },
+    { label: 'Effective tax rate on total gain',               o: fmtPct(oldTax / totalGain),     m: fmtPct(m2mTotalTax / totalGain), a: fmtPct(appTax / totalGain) }
+  ];
+
+  let html = `
+    <thead>
+      <tr>
+        <th></th>
+        <th><span class="col-tag">Current law</span>Old System</th>
+        <th><span class="col-tag">Proposal A</span>Mark-to-Market 30 Jun 2027</th>
+        <th><span class="col-tag">Proposal B</span>Time Apportionment</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+  for (const r of rows) {
+    if (r.section) {
+      html += `<tr class="section"><td colspan="4">${r.section}</td></tr>`;
+      continue;
+    }
+    const cls = [r.total ? 'total' : '', r.subtotal ? 'subtotal' : '', r.delta ? 'delta' : ''].filter(Boolean).join(' ');
+    const mCls = r.mClass || '';
+    const aCls = r.aClass || '';
+    html += `<tr class="${cls}"><td>${r.label}</td><td>${r.o}</td><td class="${mCls}">${r.m}</td><td class="${aCls}">${r.a}</td></tr>`;
+  }
+  html += '</tbody>';
+  document.getElementById('result-table').innerHTML = html;
+
+  // Wrought-O-Meter
+  const m2mDelta = m2mTotalTax - oldTax;
+  const appDelta = appTax - oldTax;
+  const worstDelta = Math.max(m2mDelta, appDelta);
+  const worstName = m2mDelta >= appDelta ? 'Mark-to-Market' : 'Time Apportionment';
+  const wroughtCard = document.getElementById('wrought-card');
+  const isPositive = worstDelta < 0;
+  wroughtCard.classList.toggle('positive', isPositive);
+  document.getElementById('wrought-big').textContent = fmtSigned(worstDelta);
+  document.getElementById('wrought-caption').textContent = isPositive
+    ? `you'd actually come out ahead under ${worstName}`
+    : `extra tax under ${worstName} - the worst-case proposal`;
+  document.getElementById('wrought-m2m').textContent = fmtSigned(m2mDelta);
+  document.getElementById('wrought-app').textContent = fmtSigned(appDelta);
+
+  // Timing note
+  const note = `<strong>Cash-flow timing matters.</strong> Under Mark-to-Market, ${fmt(p1Tax)} of tax is due at 30 June 2027 - before any exit liquidity event. Under both Old System and Time Apportionment, the entire tax bill is deferred until exit.`;
+  document.getElementById('timing-note').innerHTML = note;
+}
+
+document.querySelectorAll('input.money').forEach(el => {
+  attachCommaFormatter(el);
+  el.value = addCommas(el.value);
+});
+document.querySelectorAll('input').forEach(el => {
+  el.addEventListener('input', calc);
+  el.addEventListener('change', calc);
+});
+calc();
+</script>
+</body>
+</html>
