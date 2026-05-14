@@ -523,7 +523,8 @@ footer {
         <li>50% CGT discount applies to gains arising <strong>before 1 July 2027</strong> on assets held more than 12 months.</li>
         <li>From <strong>1 July 2027</strong> the discount is replaced by <strong>cost base indexation</strong> (per BP2 2026-27, p.21). The proposal also includes a 30% minimum tax on net capital gains, which is not modelled here as it doesn't bind at a 47% marginal rate.</li>
         <li>CPI assumed at <strong>2.64% p.a. compounded</strong> - Australia's long-term average CPI 2010-2025. Indexation runs from 1 July 2027 to the exit date.</li>
-        <li>Under Mark-to-Market the post-2027 cost base is the 30 June 2027 stake value. Under Time Apportionment, the original cost base is indexed pro-rata for the post-2027 share of the holding period.</li>
+        <li>Under <strong>Mark-to-Market</strong>, indexation runs from the actual 30 June 2027 stake value (your input).</li>
+        <li>Under <strong>Time Apportionment</strong>, the asset is assumed to have grown at a constant linear rate over the holding period; indexation runs from the <em>implied</em> 30 June 2027 value derived from this assumption (cost base + total gain × pre-1 July 2027 share of days).</li>
       </ul>
     </div>
   </section>
@@ -740,18 +741,19 @@ function calc() {
   const m2mTotalTax = p1Tax + p2Tax;
   const m2mTaxableGain = p1TaxableGain + m2mPhase2IndexedGain;
 
-  // TIME-BASED APPORTIONMENT
+  // TIME-BASED APPORTIONMENT - assumes asset grew at constant linear rate over holding period
   const appPreFrac = totalDays > 0 ? daysPreChange / totalDays : 0;
   const appPostFrac = totalDays > 0 ? daysPostChange / totalDays : 0;
+  // Implied 30 Jun 2027 value under constant-linear-growth assumption
+  const appImplied2027Value = costBase + Math.max(0, totalGain) * appPreFrac;
   const appPreGain = Math.max(0, totalGain) * appPreFrac;
   const appPostNominalGain = Math.max(0, totalGain) * appPostFrac;
   const appDiscountEligible = totalDays >= 365;
   const appPreDiscount = appDiscountEligible ? appPreGain * 0.5 : 0;
   const appPreTax = (appPreGain - appPreDiscount) * marginalRate;
-  // Post-2027 portion: index cost base pro-rata, then tax at marginal rate
-  const appCostBasePost = costBase * appPostFrac;
-  const appIndexedCostBasePost = appCostBasePost * indexFactor;
-  const appIndexBenefit = appIndexedCostBasePost - appCostBasePost;
+  // Post-2027: indexation runs from the IMPLIED 30 Jun 2027 value
+  const appIndexedCostBasePost = appImplied2027Value * indexFactor;
+  const appIndexBenefit = appIndexedCostBasePost - appImplied2027Value;
   const appPostIndexedGain = Math.max(0, appPostNominalGain - appIndexBenefit);
   const appPostTax = appPostIndexedGain * marginalRate;
   const appTax = appPreTax + appPostTax;
@@ -777,6 +779,7 @@ function calc() {
     { section: 'Post-2027 indexation (new regime)' },
     { label: 'Years from 1 Jul 2027 to exit',                  o: '-',                            m: yearsPost2027.toFixed(2) + ' yrs',         a: yearsPost2027.toFixed(2) + ' yrs' },
     { label: 'CPI factor (2.64% p.a. compounded)',             o: '-',                            m: '× ' + indexFactor.toFixed(4),             a: '× ' + indexFactor.toFixed(4) },
+    { label: 'Indexation base at 30 Jun 2027',                 o: '-',                            m: fmt(founderValue2027) + ' (actual)',       a: fmt(appImplied2027Value) + ' (implied)' },
     { label: 'Indexed cost base (post-2027)',                  o: '-',                            m: fmt(m2mIndexedCostBase),                   a: fmt(appIndexedCostBasePost) },
     { label: 'Indexation benefit (gain reduction)',            o: '-',                            m: fmt(m2mIndexedCostBase - founderValue2027), a: fmt(appIndexBenefit) },
 
