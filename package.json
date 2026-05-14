@@ -1,0 +1,21 @@
+{
+  "name": "founder-tax-wrought-calculator",
+  "version": "1.0.0",
+  "description": "Founder Wrought-O-Meter - FY27 Budget Changes Calculator",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve .",
+    "build": "echo 'No build step required for static HTML'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "tax",
+    "calculator",
+    "founder"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}

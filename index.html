@@ -524,7 +524,7 @@ footer {
         <li>From <strong>1 July 2027</strong> the discount is replaced by <strong>cost base indexation</strong> (per BP2 2026-27, p.21). The proposal also includes a 30% minimum tax on net capital gains, which is not modelled here as it doesn't bind at a 47% marginal rate.</li>
         <li>CPI assumed at <strong>2.64% p.a. compounded</strong> - Australia's long-term average CPI 2010-2025. Indexation runs from 1 July 2027 to the exit date.</li>
         <li>Under <strong>Mark-to-Market</strong>, indexation runs from the actual 30 June 2027 stake value (your input).</li>
-        <li>Under <strong>Time Apportionment</strong>, the asset is assumed to have grown at a constant linear rate over the holding period; indexation runs from the <em>implied</em> 30 June 2027 value derived from this assumption (cost base + total gain × pre-1 July 2027 share of days).</li>
+        <li>Under <strong>Time Apportionment</strong>, the asset is assumed to have grown at a constant linear rate over the holding period; indexation runs from the <em>implied</em> 30 June 2027 value derived from this assumption (cost base + total gain �� pre-1 July 2027 share of days).</li>
       </ul>
     </div>
   </section>
@@ -852,5 +852,9 @@ document.querySelectorAll('input').forEach(el => {
 });
 calc();
 </script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
