@@ -939,6 +939,10 @@ document.querySelectorAll('input').forEach(el => {
   el.addEventListener('change', calc);
 });
 calc();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', calc);
+}
+window.addEventListener('load', calc);
 </script>
 </body>
 </html>
