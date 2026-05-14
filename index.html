@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Founder CGT Tax Wrought Calculator - FY27 Budget Changes</title>
+<title>Founder CGT Wrought-O-Meter - FY27 Budget Changes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -264,27 +264,27 @@ table.comparison tr.delta td.better { color: #4a8868; }
 .wrought-card {
   background: linear-gradient(135deg, #fff 0%, #fdf6f6 100%);
   border: 1px solid var(--border);
-  border-top: 4px solid var(--poor);
+  border-top: 3px solid var(--poor);
   border-radius: 8px;
-  padding: 32px 28px 28px;
+  padding: 18px 22px 18px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   margin-bottom: 24px;
   text-align: center;
 }
 .wrought-card .eyebrow {
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .wrought-card .headline {
   font-family: 'Carlito', sans-serif;
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text);
-  margin: 0 0 24px;
+  margin: 0 0 14px;
   letter-spacing: -0.005em;
 }
 .wrought-card .headline em {
@@ -293,25 +293,24 @@ table.comparison tr.delta td.better { color: #4a8868; }
   font-weight: 700;
 }
 .wrought-gain {
-  margin: 0 auto 22px;
-  padding: 14px 24px;
+  margin: 0 auto 14px;
+  padding: 8px 18px;
   display: inline-block;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
-  min-width: 280px;
 }
 .wrought-gain .label {
   font-family: 'DM Mono', monospace;
-  font-size: 10.5px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--muted);
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 .wrought-gain .value {
   font-family: 'DM Mono', monospace;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 500;
   color: var(--text);
   letter-spacing: -0.01em;
@@ -320,56 +319,56 @@ table.comparison tr.delta td.better { color: #4a8868; }
 .wrought-pillars {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: 16px;
+  gap: 10px;
   align-items: stretch;
-  max-width: 760px;
+  max-width: 640px;
   margin: 0 auto;
 }
 .wrought-pillar {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 18px 16px;
+  padding: 10px 12px 12px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
-.wrought-pillar.old { border-top: 3px solid var(--lilac-dim); }
-.wrought-pillar.new { border-top: 3px solid var(--poor); }
+.wrought-pillar.old { border-top: 2px solid var(--lilac-dim); }
+.wrought-pillar.new { border-top: 2px solid var(--poor); }
 .wrought-pillar .system-name {
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--lilac);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   font-weight: 500;
 }
 .wrought-pillar.new .system-name { color: var(--poor); }
 .wrought-pillar .stat-label {
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-size: 9.5px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
-  margin-top: 6px;
+  margin-top: 3px;
 }
 .wrought-pillar .tax {
   font-family: 'DM Mono', monospace;
-  font-size: 18px;
+  font-size: 14px;
   color: var(--muted);
   text-decoration: line-through;
   font-weight: 400;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .wrought-pillar .keep {
   font-family: 'DM Mono', monospace;
-  font-size: 26px;
+  font-size: 18px;
   font-weight: 500;
   color: var(--text);
   letter-spacing: -0.01em;
-  line-height: 1.1;
+  line-height: 1.15;
 }
 .wrought-pillar.new .keep { color: var(--poor); }
 .wrought-arrow {
@@ -377,37 +376,30 @@ table.comparison tr.delta td.better { color: #4a8868; }
   align-items: center;
   justify-content: center;
   font-family: 'DM Mono', monospace;
-  font-size: 24px;
+  font-size: 18px;
   color: var(--lilac-dim);
-  padding: 0 4px;
+  padding: 0 2px;
 }
 .wrought-delta {
-  margin-top: 26px;
-  padding-top: 22px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px dashed var(--border);
 }
 .wrought-delta .label {
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted);
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 .wrought-delta .big {
   font-family: 'DM Mono', monospace;
-  font-size: 48px;
+  font-size: 30px;
   font-weight: 500;
   color: var(--poor);
   line-height: 1.05;
   letter-spacing: -0.02em;
-}
-.wrought-delta .sub {
-  font-family: 'Carlito', sans-serif;
-  font-size: 13px;
-  font-style: italic;
-  color: var(--muted);
-  margin-top: 6px;
 }
 .wrought-card.positive { border-top-color: #4a8868; background: linear-gradient(135deg, #fff 0%, #f4faf6 100%); }
 .wrought-card.positive .wrought-pillar.new { border-top-color: #4a8868; }
@@ -444,7 +436,7 @@ footer {
 <div class="container">
 
   <header>
-    <h1>Founder CGT Tax Wrought Calculator</h1>
+    <h1>Founder CGT Wrought-O-Meter</h1>
   </header>
 
   <section class="manifesto">
@@ -539,7 +531,7 @@ footer {
       </div>
       <div class="wrought-arrow">→</div>
       <div class="wrought-pillar new">
-        <div class="system-name" id="wrought-new-name">Wrought system</div>
+        <div class="system-name">Mark-to-Market</div>
         <div class="stat-label">Tax taken</div>
         <div class="tax" id="wrought-new-tax">$0</div>
         <div class="stat-label">You're left with</div>
@@ -550,7 +542,6 @@ footer {
     <div class="wrought-delta">
       <div class="label">Wroughted by</div>
       <div class="big" id="wrought-delta">$0</div>
-      <div class="sub" id="wrought-delta-sub">under the worst-case proposal vs current law</div>
     </div>
   </div>
 
@@ -728,29 +719,17 @@ function calc() {
   html += '</tbody>';
   document.getElementById('result-table').innerHTML = html;
 
-  // Wrought-O-Meter
+  // Wrought-O-Meter (always Mark-to-Market vs current law)
   const m2mDelta = m2mTotalTax - oldTax;
-  const appDelta = appTax - oldTax;
-  const worstDelta = Math.max(m2mDelta, appDelta);
-  const worstIsM2M = m2mDelta >= appDelta;
-  const worstName = worstIsM2M ? 'Mark-to-Market' : 'Time Apportionment';
-  const altName = worstIsM2M ? 'Time Apportionment' : 'Mark-to-Market';
-  const worstNewTax = worstIsM2M ? m2mTotalTax : appTax;
-  const altDelta = worstIsM2M ? appDelta : m2mDelta;
   const wroughtCard = document.getElementById('wrought-card');
-  const isPositive = worstDelta < 0;
-  wroughtCard.classList.toggle('positive', isPositive);
+  wroughtCard.classList.toggle('positive', m2mDelta < 0);
 
   document.getElementById('wrought-gain').textContent = fmt(totalGain);
   document.getElementById('wrought-old-tax').textContent = '- ' + fmt(oldTax);
   document.getElementById('wrought-old-keep').textContent = fmt(founderValueExit - oldTax);
-  document.getElementById('wrought-new-name').textContent = `Wrought (${worstName})`;
-  document.getElementById('wrought-new-tax').textContent = '- ' + fmt(worstNewTax);
-  document.getElementById('wrought-new-keep').textContent = fmt(founderValueExit - worstNewTax);
-  document.getElementById('wrought-delta').textContent = fmtSigned(worstDelta);
-  document.getElementById('wrought-delta-sub').textContent = isPositive
-    ? `you'd come out ahead under ${worstName}; ${altName} would be ${fmtSigned(altDelta)}`
-    : `straight out of your pocket under ${worstName} vs current law (${altName}: ${fmtSigned(altDelta)})`;
+  document.getElementById('wrought-new-tax').textContent = '- ' + fmt(m2mTotalTax);
+  document.getElementById('wrought-new-keep').textContent = fmt(founderValueExit - m2mTotalTax);
+  document.getElementById('wrought-delta').textContent = fmtSigned(m2mDelta);
 
   // Timing note
   const note = `<strong>Cash-flow timing matters.</strong> Under Mark-to-Market, ${fmt(p1Tax)} of tax is due at 30 June 2027 - before any exit liquidity event. Under both Old System and Time Apportionment, the entire tax bill is deferred until exit.`;
