@@ -105,6 +105,9 @@ p { margin: 0 0 12px; }
   margin-top: 16px;
 }
 .assumptions strong { color: var(--text); font-family: 'Carlito', sans-serif; font-weight: 700; }
+.assumptions ul { margin: 6px 0 0; padding-left: 18px; }
+.assumptions li { margin-bottom: 4px; line-height: 1.45; }
+.assumptions li:last-child { margin-bottom: 0; }
 
 .grid {
   display: grid;
@@ -514,7 +517,14 @@ footer {
     </ul>
     <p>In both cases any uplift from 30 June 2027 to your eventual exit is taxed at your full marginal rate with no discount. Enter your scenario below to see the cash tax impact of each approach.</p>
     <div class="assumptions">
-      <strong>Assumptions:</strong> top marginal tax rate of 47%; 50% CGT discount available whenever the relevant holding period exceeds 12 months.
+      <strong>Assumptions</strong>
+      <ul>
+        <li>Top marginal tax rate: <strong>47%</strong> (incl. 2% Medicare levy).</li>
+        <li>50% CGT discount applies to gains arising <strong>before 1 July 2027</strong> on assets held more than 12 months.</li>
+        <li>From <strong>1 July 2027</strong> the discount is replaced by <strong>cost base indexation</strong>, with a <strong>30% minimum tax</strong> on the nominal post-2027 capital gain (per BP2 2026-27, p.21).</li>
+        <li>CPI assumed at <strong>2.64% p.a. compounded</strong> - Australia's long-term average CPI 2010-2025. Indexation runs from 1 July 2027 to the exit date.</li>
+        <li>Under Mark-to-Market the post-2027 cost base is the 30 June 2027 stake value. Under Time Apportionment, the original cost base is indexed pro-rata for the post-2027 share of the holding period.</li>
+      </ul>
     </div>
   </section>
 
@@ -628,6 +638,8 @@ footer {
 const SNAPSHOT_DATE = new Date('2027-06-30');
 const TRANSITION_DATE = new Date('2027-07-01');
 const DAY_MS = 86400000;
+const CPI_RATE = 0.0264;
+const MIN_TAX_RATE = 0.30;
 
 const fmt = (n) => {
   if (n === null || n === undefined || isNaN(n)) return '-';
@@ -712,25 +724,46 @@ function calc() {
   const oldTaxableGain = Math.max(0, totalGain) - oldDiscountAmt;
   const oldTax = oldTaxableGain * marginalRate;
 
+  // Post-2027 indexation factor
+  const yearsPost2027 = Math.max(0, (exitDate - TRANSITION_DATE) / (DAY_MS * 365.25));
+  const indexFactor = Math.pow(1 + CPI_RATE, yearsPost2027);
+
   // MARK-TO-MARKET AT 30 JUNE 2027
+  // Phase 1: pre-2027 gain, taxed under old rules (50% discount if held >12 months at snapshot)
   const p1DiscountEligible = daysHeldAt2027 >= 365;
   const p1DiscountAmt = p1DiscountEligible ? Math.max(0, phase1Gain) * 0.5 : 0;
   const p1TaxableGain = Math.max(0, phase1Gain) - p1DiscountAmt;
   const p1Tax = p1TaxableGain * marginalRate;
-  const p2TaxableGain = Math.max(0, phase2Gain);
-  const p2Tax = p2TaxableGain * marginalRate;
+  // Phase 2: post-2027 gain, new regime (indexed cost base + 30% min tax floor)
+  const m2mIndexedCostBase = founderValue2027 * indexFactor;
+  const m2mPhase2IndexedGain = Math.max(0, founderValueExit - m2mIndexedCostBase);
+  const m2mPhase2NominalGain = Math.max(0, phase2Gain);
+  const m2mPhase2MarginalTax = m2mPhase2IndexedGain * marginalRate;
+  const m2mPhase2FloorTax = m2mPhase2NominalGain * MIN_TAX_RATE;
+  const p2Tax = Math.max(m2mPhase2MarginalTax, m2mPhase2FloorTax);
+  const m2mFloorBinds = m2mPhase2FloorTax > m2mPhase2MarginalTax && m2mPhase2NominalGain > 0;
   const m2mTotalTax = p1Tax + p2Tax;
-  const m2mTaxableGain = p1TaxableGain + p2TaxableGain;
+  const m2mTaxableGain = p1TaxableGain + m2mPhase2IndexedGain;
 
   // TIME-BASED APPORTIONMENT
   const appPreFrac = totalDays > 0 ? daysPreChange / totalDays : 0;
   const appPostFrac = totalDays > 0 ? daysPostChange / totalDays : 0;
   const appPreGain = Math.max(0, totalGain) * appPreFrac;
-  const appPostGain = Math.max(0, totalGain) * appPostFrac;
+  const appPostNominalGain = Math.max(0, totalGain) * appPostFrac;
   const appDiscountEligible = totalDays >= 365;
   const appPreDiscount = appDiscountEligible ? appPreGain * 0.5 : 0;
-  const appTaxableGain = (appPreGain - appPreDiscount) + appPostGain;
-  const appTax = appTaxableGain * marginalRate;
+  const appPreTax = (appPreGain - appPreDiscount) * marginalRate;
+  // Post-2027 portion: index cost base pro-rata, apply marginal rate or 30% floor on nominal
+  const appCostBasePost = costBase * appPostFrac;
+  const appIndexedCostBasePost = appCostBasePost * indexFactor;
+  const appIndexBenefit = appIndexedCostBasePost - appCostBasePost;
+  const appPostIndexedGain = Math.max(0, appPostNominalGain - appIndexBenefit);
+  const appPostMarginalTax = appPostIndexedGain * marginalRate;
+  const appPostFloorTax = appPostNominalGain * MIN_TAX_RATE;
+  const appPostTax = Math.max(appPostMarginalTax, appPostFloorTax);
+  const appFloorBinds = appPostFloorTax > appPostMarginalTax && appPostNominalGain > 0;
+  const appTax = appPreTax + appPostTax;
+  const appTaxableGain = (appPreGain - appPreDiscount) + appPostIndexedGain;
 
   const rows = [
     { section: 'Founder economics' },
@@ -740,14 +773,21 @@ function calc() {
     { label: 'Total economic gain',                            o: fmt(totalGain),                 m: fmt(totalGain),         a: fmt(totalGain), subtotal: true },
 
     { section: 'Gain split' },
-    { label: 'Phase 1 - cost base → 30 Jun 2027',              o: '-',                            m: fmt(phase1Gain),        a: fmt(appPreGain) },
-    { label: 'Phase 2 - 30 Jun 2027 → exit',                   o: '-',                            m: fmt(phase2Gain),        a: fmt(appPostGain) },
+    { label: 'Phase 1 - pre-2027 gain',                        o: '-',                            m: fmt(phase1Gain),        a: fmt(appPreGain) },
+    { label: 'Phase 2 - post-2027 gain',                       o: '-',                            m: fmt(phase2Gain),        a: fmt(appPostNominalGain) },
     { label: 'Pre-change fraction of holding period',          o: '-',                            m: '-',                    a: fmtPct(appPreFrac) },
 
-    { section: 'CGT discount' },
+    { section: 'CGT discount (pre-2027 portion)' },
     { label: 'Total holding period',                           o: fmtYearsDays(acqDate, exitDate),     m: fmtYearsDays(acqDate, exitDate),     a: fmtYearsDays(acqDate, exitDate) },
     { label: 'Holding period at 30 Jun 2027',                  o: '-',                                 m: fmtYearsDays(acqDate, SNAPSHOT_DATE), a: '-' },
     { label: '50% discount applied to',                        o: fmt(oldDiscountAmt),            m: fmt(p1DiscountAmt),     a: fmt(appPreDiscount) },
+
+    { section: 'Post-2027 indexation (new regime)' },
+    { label: 'Years from 1 Jul 2027 to exit',                  o: '-',                            m: yearsPost2027.toFixed(2) + ' yrs',         a: yearsPost2027.toFixed(2) + ' yrs' },
+    { label: 'CPI factor (2.64% p.a. compounded)',             o: '-',                            m: '× ' + indexFactor.toFixed(4),             a: '× ' + indexFactor.toFixed(4) },
+    { label: 'Indexed cost base (post-2027)',                  o: '-',                            m: fmt(m2mIndexedCostBase),                   a: fmt(appIndexedCostBasePost) },
+    { label: 'Indexation benefit (gain reduction)',            o: '-',                            m: fmt(m2mIndexedCostBase - founderValue2027), a: fmt(appIndexBenefit) },
+    { label: '30% min tax floor (on nominal post-2027 gain)',  o: '-',                            m: fmt(m2mPhase2FloorTax) + (m2mFloorBinds ? ' (binds)' : ''), a: fmt(appPostFloorTax) + (appFloorBinds ? ' (binds)' : '') },
 
     { section: 'Tax accrued' },
     { label: 'Taxable gain',                                   o: fmt(oldTaxableGain),            m: fmt(m2mTaxableGain),    a: fmt(appTaxableGain) },
