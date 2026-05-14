@@ -749,8 +749,8 @@ function calc() {
     { section: 'Tax payable' },
     { label: 'Taxable gain',                                   o: fmt(oldTaxableGain),            m: fmt(m2mTaxableGain),    a: fmt(appTaxableGain) },
     { label: 'Marginal rate',                                  o: fmtPct(marginalRate),           m: fmtPct(marginalRate),   a: fmtPct(marginalRate) },
-    { label: 'Tax due at 30 Jun 2027 (Phase 1)',               o: '-',                            m: fmt(p1Tax),             a: '-' },
-    { label: 'Tax due at exit (Phase 2)',                      o: fmt(oldTax),                    m: fmt(p2Tax),             a: fmt(appTax) },
+    { label: 'Tax accrued at 30 Jun 2027',                     o: '-',                            m: fmt(p1Tax),             a: '-' },
+    { label: 'Tax accrued at exit',                            o: fmt(oldTax),                    m: fmt(p2Tax),             a: fmt(appTax) },
     { label: 'TOTAL TAX PAYABLE',                              o: fmt(oldTax),                    m: fmt(m2mTotalTax),       a: fmt(appTax), total: true },
 
     { section: 'Comparison' },
