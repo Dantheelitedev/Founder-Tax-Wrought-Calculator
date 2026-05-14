@@ -514,22 +514,24 @@ footer {
 .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
 @media (max-width: 760px) {
-  body { padding: 20px 12px 40px; font-size: 14px; }
+  body { padding: 22px 14px 40px; font-size: 14px; }
   .container { max-width: 100%; }
-  h1 { font-size: 22px; }
+  header { margin-bottom: 16px; }
+  h1 { font-size: 26px; line-height: 1.15; letter-spacing: 0; margin: 0; }
   h2 { font-size: 15px; }
-  .card { padding: 18px 16px; }
+  h2 .h2-sub { display: block; font-size: 12px; margin-top: 4px; }
+  .card { padding: 18px 16px; margin-bottom: 18px; }
   .grid { grid-template-columns: 1fr; grid-template-rows: auto; grid-auto-flow: row; gap: 14px; }
   .field input { font-size: 16px; }
-  .manifesto { padding: 16px 18px; }
-  .manifesto p { font-size: 14px; line-height: 1.55; }
+  .manifesto { padding: 14px 16px; margin-bottom: 18px; }
+  .manifesto p { font-size: 13.5px; line-height: 1.55; }
   .explainer li { font-size: 13.5px; }
-  .assumptions { font-size: 11.5px; padding: 10px 12px; }
+  .assumptions { font-size: 11.5px; padding: 12px 14px; margin-bottom: 18px; }
   table.comparison { font-size: 11.5px; min-width: 540px; }
   table.comparison thead th, table.comparison td { padding: 6px 8px; }
   table.comparison thead th { font-size: 10px; }
   table.comparison thead th .col-tag { font-size: 9px; }
-  .wrought-card { padding: 14px 14px 16px; }
+  .wrought-card { padding: 16px 14px 16px; margin-bottom: 18px; }
   .wrought-card .headline { font-size: 15px; margin-bottom: 12px; }
   .wrought-gain { padding: 6px 14px; margin-bottom: 12px; }
   .wrought-gain .value { font-size: 17px; }
@@ -539,13 +541,20 @@ footer {
   .wrought-delta { margin-top: 12px; padding-top: 10px; }
   .wrought-delta .big { font-size: 24px; }
   .wrought-delta .sub { font-size: 11px; }
+  .wrought-delta .tier { font-size: 15px; margin-top: 12px; padding-top: 10px; }
+  .wrought-delta .impact { font-size: 12px; margin-top: 8px; }
   .disclaimer { font-size: 10.5px; padding: 12px 14px; }
 }
 @media (max-width: 420px) {
-  h1 { font-size: 19px; letter-spacing: 0; }
+  body { padding: 18px 12px 32px; }
+  h1 { font-size: 22px; }
+  header { margin-bottom: 12px; }
+  .manifesto { padding: 12px 14px; }
+  .manifesto p { font-size: 13px; }
   .wrought-pillar .keep { font-size: 14px; }
   .wrought-pillar .tax { font-size: 12px; }
   .wrought-delta .big { font-size: 22px; }
+  .wrought-delta .tier { font-size: 14px; }
 }
 </style>
 </head>
