@@ -102,6 +102,24 @@ p { margin: 0 0 12px; }
   color: var(--text);
   font-style: italic;
 }
+.manifesto-extra { display: none; }
+.manifesto.expanded span.manifesto-extra { display: inline; }
+.manifesto.expanded p.manifesto-extra { display: block; margin-top: 12px; }
+.read-more-btn {
+  background: none;
+  border: none;
+  color: var(--lilac-hover);
+  font-family: 'DM Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 0 0;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.read-more-btn:hover { color: var(--lilac); text-decoration: underline; }
+.read-more-btn:focus { outline: 2px solid rgba(116,116,163,0.3); outline-offset: 2px; border-radius: 2px; }
 
 .explainer ul { margin: 8px 0 12px; padding-left: 22px; }
 .explainer li { margin-bottom: 6px; }
@@ -565,8 +583,10 @@ footer {
     <h1>Founder Rort-O-Meter</h1>
   </header>
 
-  <section class="manifesto">
-    <p>The draconian changes to CGT taxation under the proposed FY27 Budget stand poised to trigger a severe brain drain across the Australian startup ecosystem. By effectively abolishing the long-standing 50% CGT discount for founders and startup employees, Australia faces the highest effective tax rate on startup capital gains anywhere in the developed world. The likely outcome is fewer founders building in Australia, weaker employee incentives, more companies and talent moving offshore, and a significant reduction in long-term innovation and corresponding job loss.</p>
+  <section class="manifesto" id="manifesto">
+    <p>This app is satire, but there is a reality beneath the humour (it is intended to mimic budget notes released to date). Founders and startup employees take asymmetric risk: they often leave secure jobs, take reduced salaries and accept outsized risks in pursuit of outsized outcomes. Presented under the guise of 'housing affordability' but reaching far beyond, proposed changes to CGT taxation under the FY27 Budget present entrepreneurs with the highest effective tax rate on startup capital gains anywhere in the developed world.<span class="manifesto-extra"> The likely outcome is fewer founders building in Australia, weaker employee incentives, more companies and talent moving offshore, and a significant reduction in long-term innovation and corresponding job loss. A targeted carve-out for genuine founders and employees taking long-term risk is the right answer.</span></p>
+    <p class="manifesto-extra">Making outsized gains at a discounted tax rate is not the norm, but the possibility is part of what makes the asymmetric trade worth taking, and Australia is better off with more founders willing to take it.</p>
+    <button class="read-more-btn" id="manifesto-toggle" aria-expanded="false">Read more</button>
   </section>
 
   <section class="card explainer">
@@ -951,6 +971,16 @@ function calc() {
     impactEl.innerHTML = '';
   }
 
+}
+
+const manifestoEl = document.getElementById('manifesto');
+const manifestoToggle = document.getElementById('manifesto-toggle');
+if (manifestoEl && manifestoToggle) {
+  manifestoToggle.addEventListener('click', () => {
+    const expanded = manifestoEl.classList.toggle('expanded');
+    manifestoToggle.textContent = expanded ? 'Read less' : 'Read more';
+    manifestoToggle.setAttribute('aria-expanded', expanded);
+  });
 }
 
 document.querySelectorAll('input.money').forEach(el => {
