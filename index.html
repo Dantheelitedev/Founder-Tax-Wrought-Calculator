@@ -106,17 +106,20 @@ p { margin: 0 0 12px; }
 .manifesto.expanded span.manifesto-extra { display: inline; }
 .manifesto.expanded p.manifesto-extra { display: block; margin-top: 12px; }
 .read-more-btn {
+  display: inline-block;
   background: none;
   border: none;
   color: var(--lilac-hover);
   font-family: 'DM Mono', monospace;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 500;
   cursor: pointer;
-  padding: 8px 0 0;
-  margin-top: 8px;
+  padding: 0;
+  margin-left: 4px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  vertical-align: baseline;
+  font-style: normal;
 }
 .read-more-btn:hover { color: var(--lilac); text-decoration: underline; }
 .read-more-btn:focus { outline: 2px solid rgba(116,116,163,0.3); outline-offset: 2px; border-radius: 2px; }
@@ -584,9 +587,8 @@ footer {
   </header>
 
   <section class="manifesto" id="manifesto">
-    <p>This app is satire, but there is a reality beneath the humour (it is intended to mimic budget notes released to date). Founders and startup employees take asymmetric risk: they often leave secure jobs, take reduced salaries and accept outsized risks in pursuit of outsized outcomes. Presented under the guise of 'housing affordability' but reaching far beyond, proposed changes to CGT taxation under the FY27 Budget present entrepreneurs with the highest effective tax rate on startup capital gains anywhere in the developed world.<span class="manifesto-extra"> The likely outcome is fewer founders building in Australia, weaker employee incentives, more companies and talent moving offshore, and a significant reduction in long-term innovation and corresponding job loss. A targeted carve-out for genuine founders and employees taking long-term risk is the right answer.</span></p>
+    <p>This app is satire, but there is a reality beneath the humour (it is intended to mimic budget notes released to date). Founders and startup employees take asymmetric risk: they often leave secure jobs, take reduced salaries and accept outsized risks in pursuit of outsized outcomes. Presented under the guise of 'housing affordability' but reaching far beyond, proposed changes to CGT taxation under the FY27 Budget present entrepreneurs with the highest effective tax rate on startup capital gains anywhere in the developed world.<span class="manifesto-extra"> The likely outcome is fewer founders building in Australia, weaker employee incentives, more companies and talent moving offshore, and a significant reduction in long-term innovation and corresponding job loss. A targeted carve-out for genuine founders and employees taking long-term risk is the right answer.</span> <button class="read-more-btn" id="manifesto-toggle" aria-expanded="false">Read more</button></p>
     <p class="manifesto-extra">Making outsized gains at a discounted tax rate is not the norm, but the possibility is part of what makes the asymmetric trade worth taking, and Australia is better off with more founders willing to take it.</p>
-    <button class="read-more-btn" id="manifesto-toggle" aria-expanded="false">Read more</button>
   </section>
 
   <section class="card explainer">
@@ -596,7 +598,7 @@ footer {
       <li><strong>Market Value Method (Mark-to-Market)</strong> - uses the asset's 1 July 2027 market value as a reference point. The pre-2027 portion of the gain (cost base → 30 June 2027 value) receives the old 50% discount; the post-2027 portion (30 June 2027 value → exit) receives the new indexation regime.</li>
       <li><strong>Time Apportionment Method</strong> - the simplified fallback. The 1 July 2027 value is estimated by formula (linear growth from cost base to sale price), then the total gain is split pro-rata by days held before and after 1 July 2027. Pre-portion gets the 50% discount; post-portion gets indexation.</li>
     </ul>
-    <p>Neither method creates a tax event on 30 June 2027. Both are calculation rules applied at the actual disposal - the entire tax bill is accrued and payable at exit. Enter your scenario below to see the cash tax impact of each approach.</p>
+    <p>Enter your scenario below to see the cash tax impact of each approach.</p>
   </section>
 
   <section class="card">
